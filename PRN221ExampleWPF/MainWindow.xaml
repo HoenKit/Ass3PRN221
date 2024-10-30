@@ -1,0 +1,23 @@
+﻿<Window x:Class="PRN221ExampleWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PRN221ExampleWPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <DockPanel>
+            <!-- Menu nằm trên cùng -->
+            <Menu DockPanel.Dock="Top" FontSize="16">
+                <MenuItem Header="Category" Click="MenuItem_Category_Click"/>
+                <MenuItem Header="Book" Click="MenuItem_Book_Click"/>
+                <MenuItem Header="User" Click="MenuItem_User_Click"/>
+                <MenuItem Header="Ship" Click="MenuItem_Ship_Click"/>
+            </Menu>
+
+            <!-- Frame để hiển thị các Page -->
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        </DockPanel>
+    </Grid>
+</Window>
