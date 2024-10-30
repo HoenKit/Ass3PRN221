@@ -12,6 +12,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<BookRepository>();
+builder.Services.AddScoped<ShipRepository>();
 
 var app = builder.Build();
 

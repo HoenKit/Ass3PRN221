@@ -1,5 +1,5 @@
 ﻿@page
-@model PRN221ExampleWeb.Pages.Categories.IndexModel
+@model PRN221ExampleWeb.Pages.Books.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -14,17 +14,29 @@
     <thead>
         <tr>
             <th>
-                Category Name
+                BookName
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Category
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Category)
+        @foreach (var item in Model.Book)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CategoryName)
+                    @Html.DisplayFor(modelItem => item.BookName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

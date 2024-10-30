@@ -8,7 +8,62 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="UserPage">
 
-    <Grid>
-        
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Form nhập liệu và các nút -->
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,0,0,10" HorizontalAlignment="Center">
+            <TextBlock Text="User Management" FontSize="20" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="User ID:" Width="100"/>
+                <TextBox x:Name="UserIDTextBox" Width="200" IsReadOnly="True"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock Text="User Name:" Width="100"/>
+                <TextBox x:Name="UserNameTextBox" Width="200"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock Text="Password:" Width="100"/>
+                <PasswordBox x:Name="PasswordTextBox" Width="200"/>
+            </StackPanel>
+
+            <!-- Các nút hành động -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                <Button Content="Save" Width="80" Margin="5" Click="SaveButton_Click"/>
+                <Button Content="Delete" Width="80" Margin="5" Click="DeleteButton_Click"/>
+                <Button Content="Reset" Width="80" Margin="5" Click="ResetButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Search và danh sách hiển thị -->
+        <StackPanel Grid.Row="1">
+            <!-- Text input và nút Search -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Center">
+                <TextBox x:Name="SearchTextBox" Width="300" Margin="0,0,10,0"/>
+                <Button Content="Search" Width="80" Click="SearchButton_Click"/>
+            </StackPanel>
+
+            <!-- DataGrid với tiêu đề là User List -->
+            <GroupBox Header="User List" Margin="10">
+                <DataGrid x:Name="UserDataGrid" 
+                   AutoGenerateColumns="False" 
+                   HeadersVisibility="Column"
+                   CanUserAddRows="False"
+                   IsReadOnly="True" Height="200" Margin="0,0,-2,0" SelectionChanged="UserDataGrid_SelectionChanged">
+
+                    <!-- Định nghĩa các cột -->
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="*"/>
+                        <DataGridTextColumn Header="User Name" Binding="{Binding UserName}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+        </StackPanel>
     </Grid>
 </Page>

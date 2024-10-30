@@ -28,5 +28,35 @@ namespace DataAccess.Repositories
                 return false;
             }
         }
+
+        public void CreateUser(User User)
+        {
+            _context.Users.Add(User);
+            _context.SaveChanges();
+        }
+
+        public void UpdateUser(User User)
+        {
+            _context.Users.Update(User);
+            _context.SaveChanges();
+        }
+
+        public void DeleteUser(int id)
+        {
+            if (GetUserById(id) != null)
+            {
+                _context.Users.Remove(GetUserById(id));
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Invalid Id");
+            }
+        }
+
+        public User GetUserById(int id) => _context.Users.Where(c => c.Id == id).FirstOrDefault();
+        public ICollection<User> GetUsersList() => _context.Users.ToList();
+
+        public ICollection<User> SearchByName(string name) => _context.Users.Where(c => c.UserName.Contains(name)).ToList();
     }
 }

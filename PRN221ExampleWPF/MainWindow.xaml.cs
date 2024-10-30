@@ -25,12 +25,16 @@ namespace PRN221ExampleWPF
         private readonly IServiceProvider _serviceProvider;
         private readonly CategoryRepository _categoryRepository;
         private readonly BookRepository _bookRepository;
-        public MainWindow(IServiceProvider serviceProvider, CategoryRepository categoryRepository, BookRepository bookRepository)
+        private readonly UserRepository _userRepository;
+        private readonly ShipRepository _shipRepository;
+        public MainWindow(IServiceProvider serviceProvider, CategoryRepository categoryRepository, BookRepository bookRepository, UserRepository userRepository, ShipRepository shipRepository)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
             _categoryRepository = categoryRepository;
             _bookRepository = bookRepository;
+            _userRepository = userRepository;
+            _shipRepository = shipRepository;
         }
 
         private void MenuItem_Category_Click(object sender, RoutedEventArgs e)
@@ -45,12 +49,12 @@ namespace PRN221ExampleWPF
 
         private void MenuItem_User_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new UserPage());
+            MainFrame.Navigate(new UserPage(_userRepository, _categoryRepository));
         }
 
         private void MenuItem_Ship_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new ShipPage());
+            MainFrame.Navigate(new ShipPage(_shipRepository, _categoryRepository, _bookRepository, _userRepository));
         }
     }
 }

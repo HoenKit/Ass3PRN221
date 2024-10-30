@@ -11,6 +11,6 @@ namespace BusinessObject.Models
         public int Id { get; set; }
         public string BookName { get; set; }
         public int Price { get; set; }
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
     }
 }

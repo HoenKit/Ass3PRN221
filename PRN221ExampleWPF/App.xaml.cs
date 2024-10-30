@@ -39,6 +39,7 @@ namespace PRN221ExampleWPF
             services.AddScoped<CategoryRepository>();
             services.AddScoped<UserRepository>();
             services.AddScoped<BookRepository>();
+            services.AddScoped<ShipRepository>();
 
             //Config Window
             services.AddTransient<LoginWindow>();

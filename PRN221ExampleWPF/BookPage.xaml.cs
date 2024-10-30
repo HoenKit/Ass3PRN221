@@ -49,7 +49,6 @@ namespace PRN221ExampleWPF
                     MessageBox.Show("Please select a category.");
                     return;
                 }
-                Book.Category = _CategoryRepository.GetCategoryById(categoryId);
                 _BookRepository.CreateBook(Book);
                 Loaded();
             }
