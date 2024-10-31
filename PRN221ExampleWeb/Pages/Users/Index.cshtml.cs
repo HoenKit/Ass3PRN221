@@ -9,28 +9,28 @@ using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
 using DataAccess.Repositories;
 
-namespace PRN221ExampleWeb.Pages.Categories
+namespace PRN221ExampleWeb.Pages.Users
 {
     public class IndexModel : PageModel
     {
-        private readonly CategoryRepository _categoryRepository;
+        private readonly UserRepository _userRepository;
 
-        public IndexModel(CategoryRepository categoryRepository)
+        public IndexModel(UserRepository userRepository)
         {
-            _categoryRepository = categoryRepository;
+            _userRepository = userRepository;
         }
 
-        public ICollection<Category> Category { get;set; } = default!;
+        public ICollection<User> User { get;set; } = default!;
         [BindProperty]
         public string search { get; set; }
 
         public async Task OnGetAsync()
         {
-            Category = _categoryRepository.GetCategoriesList();
+            User = _userRepository.GetUsersList();
         }
         public async Task OnPostAsync()
         {
-            Category = _categoryRepository.SearchByName(search);
+            User = _userRepository.SearchByName(search);
         }
     }
 }

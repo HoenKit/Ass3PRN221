@@ -9,28 +9,31 @@ using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
 using DataAccess.Repositories;
 
-namespace PRN221ExampleWeb.Pages.Categories
+namespace PRN221ExampleWeb.Pages.Ships
 {
     public class IndexModel : PageModel
     {
-        private readonly CategoryRepository _categoryRepository;
+        private readonly ShipRepository _shipRepository;
 
-        public IndexModel(CategoryRepository categoryRepository)
+        public IndexModel(ShipRepository shipRepository)
         {
-            _categoryRepository = categoryRepository;
+            _shipRepository = shipRepository;
         }
 
-        public ICollection<Category> Category { get;set; } = default!;
+        public ICollection<Ship> Ship { get;set; } = default!;
+
         [BindProperty]
         public string search { get; set; }
 
         public async Task OnGetAsync()
         {
-            Category = _categoryRepository.GetCategoriesList();
+            Ship = _shipRepository.GetShipsList();
         }
+
         public async Task OnPostAsync()
         {
-            Category = _categoryRepository.SearchByName(search);
+            int id = int.Parse(search);
+            Ship = _shipRepository.SearchById(id);
         }
     }
 }

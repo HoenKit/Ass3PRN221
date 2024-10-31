@@ -1,5 +1,6 @@
 ﻿using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,9 +42,15 @@ namespace DataAccess.Repositories
             }
         }
 
-        public Ship GetShipById(int id) => _context.Ships.Where(c => c.Id == id).FirstOrDefault();
-        public ICollection<Ship> GetShipsList() => _context.Ships.ToList();
+        public Ship GetShipById(int id) => _context.Ships.Include(s => s.Book)
+                .Include(s => s.UserOrder)
+                .Include(s => s.UserShip).Where(c => c.Id == id).FirstOrDefault();
+        public ICollection<Ship> GetShipsList() => _context.Ships.Include(s => s.Book)
+                .Include(s => s.UserOrder)
+                .Include(s => s.UserShip).ToList();
 
-        public ICollection<Ship> SearchById(int id) => _context.Ships.Where(c => c.Id == id).ToList();
+        public ICollection<Ship> SearchById(int id) => _context.Ships.Include(s => s.Book)
+                .Include(s => s.UserOrder)
+                .Include(s => s.UserShip).Where(c => c.Id == id).ToList();
     }
 }

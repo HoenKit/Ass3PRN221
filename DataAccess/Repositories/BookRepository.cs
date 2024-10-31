@@ -45,6 +45,6 @@ namespace DataAccess.Repositories
         public Book GetBookById(int id) => _context.Books.Where(c => c.Id == id).Include(c => c.Category).FirstOrDefault();
         public ICollection<Book> GetBooksList() => _context.Books.Include(c => c.Category).ToList();
 
-        public ICollection<Book> SearchByName(string name) => _context.Books.Where(c => c.BookName.Contains(name)).ToList();
+        public ICollection<Book> SearchByName(string name) => _context.Books.Where(c => c.BookName.Contains(name)).Include(c => c.Category).ToList();
     }
 }
