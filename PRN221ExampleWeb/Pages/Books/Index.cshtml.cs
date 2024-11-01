@@ -24,14 +24,25 @@ namespace PRN221ExampleWeb.Pages.Books
         [BindProperty]
         public string search { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetGetBooksAsync(string? search)
         {
-            Book = _bookRepository.GetBooksList();
+            if (string.IsNullOrEmpty(search))
+            {
+                Book =  _bookRepository.GetBooksList();
+            }
+            else
+            {
+                Book =  _bookRepository.SearchByName(search);
+            }
+
+            return new JsonResult(Book);
         }
 
-        public async Task OnPostAsync()
-        {
-            Book = _bookRepository.SearchByName(search);
-        }
+
+        //public IActionResult OnPostAsync()
+        //{
+        //    Book = _bookRepository.SearchByName(search);
+        //    return new JsonResult(Book);
+        //}
     }
 }

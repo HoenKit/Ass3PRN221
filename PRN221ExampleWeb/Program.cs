@@ -1,6 +1,7 @@
 using BusinessObject.DatabaseContext;
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
+using PRN221ExampleWeb.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddRazorPages();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.AddSignalR();
 
 builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<UserRepository>();
@@ -24,10 +26,13 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 
+
+
 app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapHub<SignalRServer>("signalrServer");
 app.MapRazorPages();
 
 app.Run();

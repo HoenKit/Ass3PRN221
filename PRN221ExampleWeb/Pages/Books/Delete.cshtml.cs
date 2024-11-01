@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
+using Microsoft.AspNetCore.SignalR;
+using DataAccess.Repositories;
+using PRN221ExampleWeb.Hubs;
 
 namespace PRN221ExampleWeb.Pages.Books
 {
     public class DeleteModel : PageModel
     {
-        private readonly BusinessObject.DatabaseContext.DataContext _context;
+        private readonly BookRepository _bookRepository;
+        private readonly IHubContext<SignalRServer> _hubContext;
 
-        public DeleteModel(BusinessObject.DatabaseContext.DataContext context)
+        public DeleteModel(BookRepository bookRepository, IHubContext<SignalRServer> hubContext)
         {
-            _context = context;
+            _bookRepository = bookRepository;
+            _hubContext = hubContext;
         }
 
         [BindProperty]
@@ -29,7 +34,7 @@ namespace PRN221ExampleWeb.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Books.FirstOrDefaultAsync(m => m.Id == id);
+            var book = _bookRepository.GetBookById((int) id);
 
             if (book == null)
             {
@@ -49,12 +54,12 @@ namespace PRN221ExampleWeb.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Books.FindAsync(id);
+            var book = _bookRepository.GetBookById((int)id);
             if (book != null)
             {
                 Book = book;
-                _context.Books.Remove(Book);
-                await _context.SaveChangesAsync();
+                _bookRepository.DeleteBook(book.Id);
+                _hubContext.Clients.All.SendAsync("BookCreated", Book.Id);
             }
 
             return RedirectToPage("./Index");
