@@ -8,16 +8,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
 using DataAccess.Repositories;
+using Microsoft.AspNetCore.SignalR;
+using PRN221ExampleWeb.Hubs;
 
 namespace PRN221ExampleWeb.Pages.Users
 {
     public class CreateModel : PageModel
     {
         private readonly UserRepository _userRepository;
+        private readonly IHubContext<SignalRServer> _hubContext;
 
-        public CreateModel(UserRepository userRepository)
+        public CreateModel(UserRepository userRepository, IHubContext<SignalRServer> hubContext)
         {
             _userRepository = userRepository;
+            _hubContext = hubContext;
         }
 
         public IActionResult OnGet()
@@ -37,6 +41,7 @@ namespace PRN221ExampleWeb.Pages.Users
             }
 
             _userRepository.CreateUser(User);
+            _hubContext.Clients.All.SendAsync("UserCreated", User.Id);
 
             return RedirectToPage("./Index");
         }

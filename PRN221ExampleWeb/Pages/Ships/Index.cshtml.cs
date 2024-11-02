@@ -22,18 +22,21 @@ namespace PRN221ExampleWeb.Pages.Ships
 
         public ICollection<Ship> Ship { get;set; } = default!;
 
-        [BindProperty]
-        public string search { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Search { get; set; }
 
-        public async Task OnGetAsync()
+        public IActionResult OnGetGetShipsAsync()
         {
-            Ship = _shipRepository.GetShipsList();
-        }
+            if (!string.IsNullOrEmpty(Search))
+            {
+                Ship = _shipRepository.SearchById(int.Parse(Search));
+            }
+            else
+            {
+                Ship = _shipRepository.GetShipsList();
+            }
 
-        public async Task OnPostAsync()
-        {
-            int id = int.Parse(search);
-            Ship = _shipRepository.SearchById(id);
+            return new JsonResult(Ship);
         }
     }
 }

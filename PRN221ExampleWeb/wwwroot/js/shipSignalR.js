@@ -1,23 +1,23 @@
 ﻿$(() => {
-    LoadBookData();
+    LoadShipData();
 
     var connection = new signalR.HubConnectionBuilder().withUrl("/signalRServer").build();
     connection.start();
 
-    connection.on("BookCreated", function () {
-        LoadBookData();
+    connection.on("ShipCreated", function () {
+        LoadShipData();
     });
 
     $('#searchForm').on('submit', function (e) {
         e.preventDefault();
-        LoadBookData($('#Search').val());
+        LoadShipData($('#Search').val());
     });
 
-    function LoadBookData(searchQuery = '') {
+    function LoadShipData(searchQuery = '') {
         var tr = '';
 
         $.ajax({
-            url: '/Books?handler=GetBooks',
+            url: '/Ships?handler=GetShips',
             method: 'GET',
             data: { Search: searchQuery }, 
             success: (result) => {
@@ -26,9 +26,11 @@
                 <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Book Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
+                            <th>Book</th>
+                            <th>Date Order</th>
+                            <th>Date Ship</th>
+                            <th>User Order</th>
+                            <th>User Ship</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -37,13 +39,15 @@
                 $.each(result, (k, v) => {
                     tr += `
                         <tr>
-                            <td>${v.bookName}</td> 
-                            <td>${v.price}$</td> 
-                            <td>${v.category.categoryName}</td>
+                            <td>${v.book.bookName}</td>
+                            <td>${v.dateOrder}</td> 
+                            <td>${v.dateShip}</td> 
+                            <td>${v.userOrder.userName}</td> 
+                            <td>${v.userShip.userName}</td> 
                             <td>
-                                <a class="btn btn-primary btn-sm" href="../Books/Edit?Id=${v.id}">Edit</a>
-                                <a class="btn btn-info btn-sm" href="../Books/Details?Id=${v.id}">Details</a>
-                                <a class="btn btn-danger btn-sm" href="../Books/Delete?Id=${v.id}">Delete</a>
+                                <a class="btn btn-primary btn-sm" href="../Ships/Edit?Id=${v.id}">Edit</a>
+                                <a class="btn btn-info btn-sm" href="../Ships/Details?Id=${v.id}">Details</a>
+                                <a class="btn btn-danger btn-sm" href="../Ships/Delete?Id=${v.id}">Delete</a>
                             </td>
                         </tr>`;
                 });

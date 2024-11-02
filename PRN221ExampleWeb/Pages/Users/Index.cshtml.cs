@@ -21,16 +21,21 @@ namespace PRN221ExampleWeb.Pages.Users
         }
 
         public ICollection<User> User { get;set; } = default!;
-        [BindProperty]
-        public string search { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Search { get; set; }
 
-        public async Task OnGetAsync()
+        public IActionResult OnGetGetUsersAsync()
         {
-            User = _userRepository.GetUsersList();
-        }
-        public async Task OnPostAsync()
-        {
-            User = _userRepository.SearchByName(search);
+            if (!string.IsNullOrEmpty(Search))
+            {
+                User = _userRepository.SearchByName(Search);
+            }
+            else
+            {
+                User = _userRepository.GetUsersList();
+            }
+
+            return new JsonResult(User);
         }
     }
 }

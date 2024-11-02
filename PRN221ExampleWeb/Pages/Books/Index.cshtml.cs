@@ -21,18 +21,19 @@ namespace PRN221ExampleWeb.Pages.Books
         }
 
         public ICollection<Book> Book { get;set; } = default!;
-        [BindProperty]
-        public string search { get; set; }
 
-        public async Task<IActionResult> OnGetGetBooksAsync(string? search)
+        [BindProperty(SupportsGet = true)]
+        public string Search { get; set; }
+
+        public IActionResult OnGetGetBooksAsync()
         {
-            if (string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(Search))
             {
-                Book =  _bookRepository.GetBooksList();
+                Book = _bookRepository.SearchByName(Search);
             }
             else
             {
-                Book =  _bookRepository.SearchByName(search);
+                Book = _bookRepository.GetBooksList();
             }
 
             return new JsonResult(Book);

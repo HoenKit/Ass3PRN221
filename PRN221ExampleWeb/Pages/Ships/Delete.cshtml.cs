@@ -8,16 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
 using DataAccess.Repositories;
+using Microsoft.AspNetCore.SignalR;
+using PRN221ExampleWeb.Hubs;
 
 namespace PRN221ExampleWeb.Pages.Ships
 {
     public class DeleteModel : PageModel
     {
         private readonly ShipRepository _shipRepository;
+        private readonly IHubContext<SignalRServer> _hubContext;
 
-        public DeleteModel(ShipRepository shipRepository)
+        public DeleteModel(ShipRepository shipRepository, IHubContext<SignalRServer> hubContext)
         {
             _shipRepository = shipRepository;
+            _hubContext = hubContext;
         }
 
         [BindProperty]
@@ -55,6 +59,7 @@ namespace PRN221ExampleWeb.Pages.Ships
             {
                 Ship = ship;
                 _shipRepository.DeleteShip(ship.Id);
+                _hubContext.Clients.All.SendAsync("ShipCreated", Ship.Id);
             }
 
             return RedirectToPage("./Index");

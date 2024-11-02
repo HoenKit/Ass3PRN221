@@ -10,13 +10,14 @@
     <a asp-page="Create">Create New</a>
 </p>
 <p>
-    <form method="get" asp-page-handler="GetBooks">
-        <div class="form-group">
-            <input id="search" name="search" class="form-control" />
-            <br />
-            <input type="submit" value="Search" class="btn btn-primary" />
-        </div>
-    </form>
+    <form id="searchForm" method="get" asp-page-handler="GetBooks">
+    <div class="form-group">
+        <input id="Search" name="Search" class="form-control" />
+        <br />
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+</form>
+
 </p>
 <table class="table" id="tableBody">
     @* <thead>
@@ -56,6 +57,6 @@
     </tbody> *@
 </table>
 @section Scripts {
-<script src="~/js/bookSignalR.js" asp-append-version="true"></script>
+    <script src="~/js/bookSignalR.js" asp-append-version="true"></script>
 }
 

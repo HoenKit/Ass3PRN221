@@ -8,16 +8,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
 using DataAccess.Repositories;
+using Microsoft.AspNetCore.SignalR;
+using PRN221ExampleWeb.Hubs;
 
 namespace PRN221ExampleWeb.Pages.Categories
 {
     public class CreateModel : PageModel
     {
         private readonly CategoryRepository _categoryRepository;
+        private readonly IHubContext<SignalRServer> _hubContext;
 
-        public CreateModel(CategoryRepository categoryRepository)
+        public CreateModel(CategoryRepository categoryRepository, IHubContext<SignalRServer> hubContext)
         {
             _categoryRepository = categoryRepository;
+            _hubContext = hubContext;
         }
 
         public IActionResult OnGet()
@@ -37,6 +41,7 @@ namespace PRN221ExampleWeb.Pages.Categories
             }
 
             _categoryRepository.CreateCategory(Category);
+            _hubContext.Clients.All.SendAsync("CategoryCreated", Category.Id);
 
             return RedirectToPage("./Index");
         }

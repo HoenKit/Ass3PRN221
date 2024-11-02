@@ -9,16 +9,20 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
 using DataAccess.Repositories;
+using Microsoft.AspNetCore.SignalR;
+using PRN221ExampleWeb.Hubs;
 
 namespace PRN221ExampleWeb.Pages.Users
 {
     public class EditModel : PageModel
     {
         private readonly UserRepository _userRepository;
+        private readonly IHubContext<SignalRServer> _hubContext;
 
-        public EditModel(UserRepository userRepository)
+        public EditModel(UserRepository userRepository, IHubContext<SignalRServer> hubContext)
         {
             _userRepository = userRepository;
+            _hubContext = hubContext;
         }
 
         [BindProperty]
@@ -50,6 +54,7 @@ namespace PRN221ExampleWeb.Pages.Users
             }
 
            _userRepository.UpdateUser(User);
+            _hubContext.Clients.All.SendAsync("UserCreated", User.Id);
 
             return RedirectToPage("./Index");
         }

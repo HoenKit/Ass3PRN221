@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
 using DataAccess.Repositories;
+using Microsoft.AspNetCore.SignalR;
+using PRN221ExampleWeb.Hubs;
 
 namespace PRN221ExampleWeb.Pages.Ships
 {
@@ -17,12 +19,14 @@ namespace PRN221ExampleWeb.Pages.Ships
         private readonly ShipRepository _shipRepository;
         private readonly UserRepository _userRepository;
         private readonly BookRepository _bookRepository;
+        private readonly IHubContext<SignalRServer> _hubContext;
 
-        public EditModel(ShipRepository shipRepository, UserRepository userRepository, BookRepository bookRepository)
+        public EditModel(ShipRepository shipRepository, UserRepository userRepository, BookRepository bookRepository, IHubContext<SignalRServer> hubContext)
         {
             _shipRepository = shipRepository;
             _userRepository = userRepository;
             _bookRepository = bookRepository;
+            _hubContext = hubContext;
         }
 
         [BindProperty]
@@ -57,6 +61,7 @@ namespace PRN221ExampleWeb.Pages.Ships
             }
 
             _shipRepository.UpdateShip(Ship);
+            _hubContext.Clients.All.SendAsync("ShipCreated", Ship.Id);
 
             return RedirectToPage("./Index");
         }

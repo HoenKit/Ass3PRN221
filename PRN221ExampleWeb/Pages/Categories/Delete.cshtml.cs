@@ -8,16 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
 using DataAccess.Repositories;
+using Microsoft.AspNetCore.SignalR;
+using PRN221ExampleWeb.Hubs;
 
 namespace PRN221ExampleWeb.Pages.Categories
 {
     public class DeleteModel : PageModel
     {
         private readonly CategoryRepository _categoryRepository;
+        private readonly IHubContext<SignalRServer> _hubContext;
 
-        public DeleteModel(CategoryRepository categoryRepository)
+        public DeleteModel(CategoryRepository categoryRepository, IHubContext<SignalRServer> hubContext)
         {
             _categoryRepository = categoryRepository;
+            _hubContext = hubContext;
         }
 
         [BindProperty]
@@ -54,6 +58,7 @@ namespace PRN221ExampleWeb.Pages.Categories
             if (category != null)
             {
                 _categoryRepository.DeleteCategory(category.Id);
+                _hubContext.Clients.All.SendAsync("CategoryCreated", Category.Id);
             }
 
             return RedirectToPage("./Index");

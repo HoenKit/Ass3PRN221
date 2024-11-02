@@ -9,16 +9,20 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.DatabaseContext;
 using BusinessObject.Models;
 using DataAccess.Repositories;
+using Microsoft.AspNetCore.SignalR;
+using PRN221ExampleWeb.Hubs;
 
 namespace PRN221ExampleWeb.Pages.Categories
 {
     public class EditModel : PageModel
     {
         private readonly CategoryRepository _categoryRepository;
+        private readonly IHubContext<SignalRServer> _hubContext;
 
-        public EditModel(CategoryRepository categoryRepository)
+        public EditModel(CategoryRepository categoryRepository, IHubContext<SignalRServer> hubContext)
         {
             _categoryRepository = categoryRepository;
+            _hubContext = hubContext;
         }
 
         [BindProperty]
@@ -50,6 +54,7 @@ namespace PRN221ExampleWeb.Pages.Categories
             }
 
             _categoryRepository.UpdateCategory(Category);
+            _hubContext.Clients.All.SendAsync("CategoryCreated", Category.Id);
 
             return RedirectToPage("./Index");
         }

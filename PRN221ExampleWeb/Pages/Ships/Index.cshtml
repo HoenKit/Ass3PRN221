@@ -11,16 +11,16 @@
     <a asp-page="Create">Create New</a>
 </p>
 <p>
-    <form method="post">
+    <form id="searchForm" method="get" asp-page-handler="GetBooks">
         <div class="form-group">
-            <input id="search" name="search" class="form-control" />
+            <input id="Search" name="Search" class="form-control" />
             <br />
             <input type="submit" value="Search" class="btn btn-primary" />
         </div>
     </form>
 </p>
-<table class="table">
-    <thead>
+<table class="table" id="tableBody">
+    @* <thead>
         <tr>
             <th>
                 Book
@@ -66,5 +66,8 @@
                 </td>
             </tr>
         }
-    </tbody>
+    </tbody> *@
 </table>
+@section Scripts {
+    <script src="~/js/shipSignalR.js" asp-append-version="true"></script>
+}

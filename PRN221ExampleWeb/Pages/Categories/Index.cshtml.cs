@@ -21,16 +21,21 @@ namespace PRN221ExampleWeb.Pages.Categories
         }
 
         public ICollection<Category> Category { get;set; } = default!;
-        [BindProperty]
-        public string search { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Search { get; set; }
 
-        public async Task OnGetAsync()
+        public IActionResult OnGetGetCategoriesAsync()
         {
-            Category = _categoryRepository.GetCategoriesList();
-        }
-        public async Task OnPostAsync()
-        {
-            Category = _categoryRepository.SearchByName(search);
+            if (!string.IsNullOrEmpty(Search))
+            {
+                Category = _categoryRepository.SearchByName(Search);
+            }
+            else
+            {
+                Category = _categoryRepository.GetCategoriesList();
+            }
+
+            return new JsonResult(Category);
         }
     }
 }

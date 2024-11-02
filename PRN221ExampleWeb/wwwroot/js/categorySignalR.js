@@ -1,23 +1,23 @@
 ﻿$(() => {
-    LoadBookData();
+    LoadCategoryData();
 
     var connection = new signalR.HubConnectionBuilder().withUrl("/signalRServer").build();
     connection.start();
 
-    connection.on("BookCreated", function () {
-        LoadBookData();
+    connection.on("CategoryCreated", function () {
+        LoadCategoryData();
     });
 
     $('#searchForm').on('submit', function (e) {
         e.preventDefault();
-        LoadBookData($('#Search').val());
+        LoadCategoryData($('#Search').val());
     });
 
-    function LoadBookData(searchQuery = '') {
+    function LoadCategoryData(searchQuery = '') {
         var tr = '';
 
         $.ajax({
-            url: '/Books?handler=GetBooks',
+            url: '/Categories?handler=GetCategories',
             method: 'GET',
             data: { Search: searchQuery }, 
             success: (result) => {
@@ -26,9 +26,7 @@
                 <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Book Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
+                            <th>Category Name</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -37,13 +35,11 @@
                 $.each(result, (k, v) => {
                     tr += `
                         <tr>
-                            <td>${v.bookName}</td> 
-                            <td>${v.price}$</td> 
-                            <td>${v.category.categoryName}</td>
+                            <td>${v.categoryName}</td> 
                             <td>
-                                <a class="btn btn-primary btn-sm" href="../Books/Edit?Id=${v.id}">Edit</a>
-                                <a class="btn btn-info btn-sm" href="../Books/Details?Id=${v.id}">Details</a>
-                                <a class="btn btn-danger btn-sm" href="../Books/Delete?Id=${v.id}">Delete</a>
+                                <a class="btn btn-primary btn-sm" href="../Categories/Edit?Id=${v.id}">Edit</a>
+                                <a class="btn btn-info btn-sm" href="../Categories/Details?Id=${v.id}">Details</a>
+                                <a class="btn btn-danger btn-sm" href="../Categories/Delete?Id=${v.id}">Delete</a>
                             </td>
                         </tr>`;
                 });
