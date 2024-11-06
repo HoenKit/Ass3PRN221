@@ -34,10 +34,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Ships/Index">Ship</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index" asp-page-handler="LogOut">Logout</a>
-                        </li>
+                        
                     </ul>
+                    @if (Context.Session.GetString("UserName")!= null)
+                    {
+                        <div class="nav-item">
+                            <a class="nav-link text-dark" asp-area="">Hello @Context.Session.GetString("UserName")</a>
+                        </div>
+                        <div class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index" asp-page-handler="LogOut">Logout</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="nav-item">
+                            <a class="nav-link text-dark" asp-area="">Please Login</a>
+                        </div>
+                        <div class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index" asp-page-handler="LogOut">Home</a>
+                        </div>
+                    }
                 </div>
             </div>
         </nav>
