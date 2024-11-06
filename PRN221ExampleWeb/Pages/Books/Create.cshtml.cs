@@ -36,6 +36,11 @@ namespace PRN221ExampleWeb.Pages.Books
         public int CategoryId { get; set; }
         public IActionResult OnGet()
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToPage("/Index");
+            }
             Categories = _categoryRepository.GetCategoriesList();
             return Page();
         }
@@ -43,6 +48,11 @@ namespace PRN221ExampleWeb.Pages.Books
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToPage("/Index");
+            }
             if (!ModelState.IsValid)
             {
                 Categories = _categoryRepository.GetCategoriesList();

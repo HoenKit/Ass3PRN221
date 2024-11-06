@@ -29,6 +29,11 @@ namespace PRN221ExampleWeb.Pages.Ships
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToPage("/Index");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -49,6 +54,11 @@ namespace PRN221ExampleWeb.Pages.Ships
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToPage("/Index");
+            }
             if (id == null)
             {
                 return NotFound();

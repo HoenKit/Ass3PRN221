@@ -11,6 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddSignalR();
+builder.Services.AddSession();
 
 builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<UserRepository>();
@@ -26,7 +27,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 
-
+app.UseSession();
 
 app.UseRouting();
 

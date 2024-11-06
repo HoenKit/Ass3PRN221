@@ -26,6 +26,14 @@ namespace PRN221ExampleWeb.Pages.Users
 
         public IActionResult OnGetGetUsersAsync()
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return new JsonResult(new { success = false, message = "Unauthorized. Please log in." })
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                };
+            }
             if (!string.IsNullOrEmpty(Search))
             {
                 User = _userRepository.SearchByName(Search);

@@ -30,11 +30,17 @@ namespace PRN221ExampleWeb.Pages
             }
             if (_userRepository.Login(User.UserName, User.Password))
             {
+                HttpContext.Session.SetString("UserName", User.UserName);
                 return RedirectToPage("./Categories/Index");
             }
             ModelState.AddModelError(string.Empty, "Invalid login.");
+            
             return Page();
         }
-
+        public IActionResult OnGetLogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/Index");
+        }
     }
 }

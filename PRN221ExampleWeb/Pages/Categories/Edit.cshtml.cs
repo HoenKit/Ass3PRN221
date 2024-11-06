@@ -30,6 +30,11 @@ namespace PRN221ExampleWeb.Pages.Categories
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToPage("/Index");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -48,6 +53,11 @@ namespace PRN221ExampleWeb.Pages.Categories
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToPage("/Index");
+            }
             if (!ModelState.IsValid)
             {
                 return Page();

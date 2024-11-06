@@ -27,6 +27,14 @@ namespace PRN221ExampleWeb.Pages.Ships
 
         public IActionResult OnGetGetShipsAsync()
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return new JsonResult(new { success = false, message = "Unauthorized. Please log in." })
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                };
+            }
             if (!string.IsNullOrEmpty(Search))
             {
                 Ship = _shipRepository.SearchById(int.Parse(Search));
@@ -38,5 +46,7 @@ namespace PRN221ExampleWeb.Pages.Ships
 
             return new JsonResult(Ship);
         }
+
+        
     }
 }

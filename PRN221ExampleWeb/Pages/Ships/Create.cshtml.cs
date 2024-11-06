@@ -30,6 +30,11 @@ namespace PRN221ExampleWeb.Pages.Ships
 
         public IActionResult OnGet()
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToPage("/Index");
+            }
             ViewData["BookId"] = new SelectList(_bookRepository.GetBooksList(), "Id", "BookName");
             ViewData["UserOrderId"] = new SelectList(_userRepository.GetUsersList(), "Id", "UserName");
             ViewData["UserShipId"] = new SelectList(_userRepository.GetUsersList(), "Id", "UserName");
@@ -42,6 +47,11 @@ namespace PRN221ExampleWeb.Pages.Ships
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToPage("/Index");
+            }
             if (!ModelState.IsValid)
             {
                 return Page();

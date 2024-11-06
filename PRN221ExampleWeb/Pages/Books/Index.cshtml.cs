@@ -27,6 +27,14 @@ namespace PRN221ExampleWeb.Pages.Books
 
         public IActionResult OnGetGetBooksAsync()
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return new JsonResult(new { success = false, message = "Unauthorized. Please log in." })
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                };
+            }
             if (!string.IsNullOrEmpty(Search))
             {
                 Book = _bookRepository.SearchByName(Search);

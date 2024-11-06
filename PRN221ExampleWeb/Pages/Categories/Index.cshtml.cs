@@ -26,6 +26,14 @@ namespace PRN221ExampleWeb.Pages.Categories
 
         public IActionResult OnGetGetCategoriesAsync()
         {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return new JsonResult(new { success = false, message = "Unauthorized. Please log in." })
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                };
+            }
             if (!string.IsNullOrEmpty(Search))
             {
                 Category = _categoryRepository.SearchByName(Search);
